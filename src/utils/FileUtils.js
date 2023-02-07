@@ -27,7 +27,9 @@ export const chunkUpload = (file) => {
         } else {
             let md5 = spark.end();
             console.log(`full file md5:${md5}`);
-            checkFileExistence({md5})
+            checkFileExistence({
+                "fullFileMd5": md5
+            })
                 .then(async (resp) => {
                     if (!resp.fullFileExist) {
                         await doUpload(file, md5, totalChunkCount, size, resp.validChunkNumbers)
@@ -45,7 +47,7 @@ export const chunkUpload = (file) => {
 const doUpload = async (file, md5, totalChunkCount, size, validChunkNumbers) => {
     for (let i = 0; i < totalChunkCount; i++) {
         let chunkNumber = i + 1;
-        if (validChunkNumbers.contains(chunkNumber)) {
+        if (validChunkNumbers.includes(chunkNumber)) {
             console.log('test skip chunk upload')
             continue
         }
@@ -59,7 +61,6 @@ const doUpload = async (file, md5, totalChunkCount, size, validChunkNumbers) => 
         formData.append('totalChunkCount', totalChunkCount);
         formData.append('fullFileName', file.name);
         formData.append('fullFileMd5', md5);
-        formData.append('currentChunkMd5', md5);
         await uploadChunk(formData).then((data) => {
             console.log(`upload chunk successfully:${data}`);
         });
