@@ -12,5 +12,5 @@ export const uploadChunk = (formData) => axios.post(`${BASE_URL}/advance/chunk`,
 export const mergeChunk = (data) => axios.post(`${BASE_URL}/advance/chunk/merge`, data)
     .then((resp) => resp.data);
 
-export const checkFileExistence = (data) => axios.post(`${BASE_URL}/advance/check-existence`, data)
+export const checkFileExistence = (data) => axios.post(`${BASE_URL}/advance/chunk/validate-and-clean-damaged`, data)
     .then((resp) => resp.data);
