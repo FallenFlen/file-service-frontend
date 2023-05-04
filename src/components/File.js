@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {chunkUpload} from "../utils/FileUtils";
-import {findAll} from "../api/FileApi";
+import {findAllFiles} from "../api/FileApi";
 import '../App.css';
 
 const File = () => {
@@ -14,7 +14,7 @@ const File = () => {
     }
 
     useEffect(() => {
-        findAll().then((resp) => {
+        findAllFiles().then((resp) => {
             setFileList(resp)
         })
     }, [])
