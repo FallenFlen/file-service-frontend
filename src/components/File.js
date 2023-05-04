@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {chunkUpload, downloadWithChunk} from "../utils/FileUtils";
+import {chunkUpload} from "../utils/FileUtils";
 import {findAll} from "../api/FileApi";
 import '../App.css';
 
@@ -8,19 +8,16 @@ const File = () => {
 
     const upload = () => {
         let file = document.getElementById('file').files[0];
-        console.log(file);
-        chunkUpload(file);
+        if (file) {
+            chunkUpload(file);
+        }
     }
 
     useEffect(() => {
-        renderFileList()
-    }, [])
-
-    const renderFileList = () => {
         findAll().then((resp) => {
             setFileList(resp)
         })
-    }
+    }, [])
 
     return (
         <div>
@@ -34,7 +31,6 @@ const File = () => {
                     fileList.map((file) => (<li className={'item'} key={file.id}>
                         <span>{file.name}</span>
                         <span>{Math.floor(file.size / (1024 * 1024))}MB</span>
-                        <button onClick={() => downloadWithChunk(file.path, file.size)}>下载</button>
                     </li>))
                 }
             </ul>
