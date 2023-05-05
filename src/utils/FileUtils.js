@@ -32,7 +32,7 @@ export const chunkUpload = (file) => {
             })
                 .then(async (resp) => {
                     if (!resp.fullFileExist) {
-                        await doUpload(file, md5, totalChunkCount, size, resp.validChunkNumbers)
+                        await doUpload(file, md5, totalChunkCount, size, resp.existedAndValidChunkNumbers)
                         doMerge(file.name, md5, totalChunkCount, size)
                     } else {
                         alertAndReload();
@@ -50,10 +50,10 @@ const alertAndReload = () => {
     window.location.reload();
 }
 
-const doUpload = async (file, md5, totalChunkCount, size, validChunkNumbers) => {
+const doUpload = async (file, md5, totalChunkCount, size, existedAndValidChunkNumbers) => {
     for (let i = 0; i < totalChunkCount; i++) {
         let chunkNumber = i + 1;
-        if (validChunkNumbers.includes(chunkNumber)) {
+        if (existedAndValidChunkNumbers.includes(chunkNumber)) {
             console.log('test skip chunk upload')
             continue
         }
