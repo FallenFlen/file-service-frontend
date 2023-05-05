@@ -1,5 +1,6 @@
 import SparkMD5 from 'spark-md5';
 import {uploadChunk, mergeChunk, checkFileExistence} from "../api/FileApi";
+import axios from "axios";
 
 const CHUNK_SIZE = 5 * 1024 * 1024; // 5mb分片
 
@@ -47,10 +48,11 @@ export const chunkUpload = (file) => {
 
 const alertAndReload = () => {
     alert('File upload success!');
-    window.location.reload();
+    // window.location.reload();
 }
 
 const doUpload = async (file, md5, totalChunkCount, size, existedAndValidChunkNumbers) => {
+    let requests = [];
     for (let i = 0; i < totalChunkCount; i++) {
         let chunkNumber = i + 1;
         if (existedAndValidChunkNumbers.includes(chunkNumber)) {
@@ -67,10 +69,11 @@ const doUpload = async (file, md5, totalChunkCount, size, existedAndValidChunkNu
         formData.append('totalChunkCount', totalChunkCount);
         formData.append('fullFileName', file.name);
         formData.append('fullFileMd5', md5);
-        await uploadChunk(formData).then((data) => {
-            console.log(`upload chunk successfully:${data}`);
-        });
+        requests.push()
+        let request = uploadChunk(formData);
+        requests.push(request);
     }
+    await axios.all(requests);
 }
 
 const doMerge = (fileName, md5, totalChunkCount, fullFileSize) => {

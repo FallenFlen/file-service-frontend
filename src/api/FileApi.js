@@ -6,8 +6,7 @@ export const uploadChunk = (formData) => axios.post(`${BASE_URL}/chunk`, formDat
     headers: {
         'Content-Type': 'multipart/form-data'
     }
-})
-    .then((resp) => resp.data);
+});
 
 export const mergeChunk = (data) => axios.post(`${BASE_URL}/chunk/merge`, data)
     .then((resp) => resp.data);
