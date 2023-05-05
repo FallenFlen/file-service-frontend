@@ -35,6 +35,7 @@ export const chunkUpload = (file) => {
                         await doUpload(file, md5, totalChunkCount, size, resp.validChunkNumbers)
                         doMerge(file.name, md5, totalChunkCount, size)
                     } else {
+                        alertAndReload();
                         console.log('full file already existed, upload completed')
                     }
 
@@ -43,6 +44,11 @@ export const chunkUpload = (file) => {
     };
 
 };
+
+const alertAndReload = () => {
+    alert('File upload success!');
+    window.location.reload();
+}
 
 const doUpload = async (file, md5, totalChunkCount, size, validChunkNumbers) => {
     for (let i = 0; i < totalChunkCount; i++) {
@@ -76,8 +82,10 @@ const doMerge = (fileName, md5, totalChunkCount, fullFileSize) => {
     })
         .then((data) => {
             console.log(`merge chunk successfully:${data}`);
+            alertAndReload();
         })
         .catch((err) => {
+            alert('merge chunk failed!');
             console.log(`merge chunk failed:${err}`);
         });
 }
